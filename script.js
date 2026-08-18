@@ -80,3 +80,127 @@ function drawSigil() {
 }
 
 drawSigil();
+const behaviorCanvas = document.getElementById("behaviorCanvas");
+const behaviorCtx = behaviorCanvas.getContext("2d");
+
+function resizeBehaviorCanvas() {
+    behaviorCanvas.width = behaviorCanvas.clientWidth;
+    behaviorCanvas.height = behaviorCanvas.clientHeight;
+}
+
+resizeBehaviorCanvas();
+window.addEventListener("resize", resizeBehaviorCanvas);
+
+const forms = [
+    {
+        x: 0.25,
+        y: 0.35,
+        size: 18,
+        opacity: 1,
+        disappearing: false
+    },
+    {
+        x: 0.50,
+        y: 0.50,
+        size: 24,
+        opacity: 1,
+        disappearing: false
+    },
+    {
+        x: 0.72,
+        y: 0.32,
+        size: 16,
+        opacity: 1,
+        disappearing: false
+    },
+    {
+        x: 0.68,
+        y: 0.70,
+        size: 20,
+        opacity: 1,
+        disappearing: false
+    },
+    {
+        x: 0.30,
+        y: 0.72,
+        size: 14,
+        opacity: 1,
+        disappearing: false
+    }
+];
+
+behaviorCanvas.addEventListener("click", function(event) {
+
+    const rect = behaviorCanvas.getBoundingClientRect();
+
+    const mouseX = event.clientX - rect.left;
+    const mouseY = event.clientY - rect.top;
+
+    forms.forEach(form => {
+
+        const x = form.x * behaviorCanvas.width;
+        const y = form.y * behaviorCanvas.height;
+
+        const distance = Math.sqrt(
+            (mouseX - x) ** 2 +
+            (mouseY - y) ** 2
+        );
+
+        if (distance < form.size + 15) {
+            form.disappearing = true;
+        }
+
+    });
+
+});
+
+function drawBehavior() {
+
+    behaviorCtx.fillStyle = "#050505";
+    behaviorCtx.fillRect(
+        0,
+        0,
+        behaviorCanvas.width,
+        behaviorCanvas.height
+    );
+
+    forms.forEach(form => {
+
+        if (form.disappearing) {
+            form.opacity -= 0.01;
+            form.size += 0.15;
+        }
+
+        if (form.opacity <= 0) {
+            form.opacity = 0;
+        }
+
+        const x = form.x * behaviorCanvas.width;
+        const y = form.y * behaviorCanvas.height;
+
+        behaviorCtx.save();
+
+        behaviorCtx.globalAlpha = form.opacity;
+        behaviorCtx.strokeStyle = "#eeeeee";
+        behaviorCtx.lineWidth = 2;
+
+        behaviorCtx.beginPath();
+
+        behaviorCtx.arc(
+            x,
+            y,
+            form.size,
+            0,
+            Math.PI * 2
+        );
+
+        behaviorCtx.stroke();
+
+        behaviorCtx.restore();
+
+    });
+
+    requestAnimationFrame(drawBehavior);
+}
+
+drawBehavior();
