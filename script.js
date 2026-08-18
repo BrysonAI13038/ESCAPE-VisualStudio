@@ -307,3 +307,90 @@ function drawGesture() {
 }
 
 drawGesture();
+const atmosphereCanvas = document.getElementById("atmosphereCanvas");
+const atmosphereCtx = atmosphereCanvas.getContext("2d");
+
+function resizeAtmosphereCanvas() {
+    atmosphereCanvas.width = atmosphereCanvas.clientWidth;
+    atmosphereCanvas.height = atmosphereCanvas.clientHeight;
+}
+
+resizeAtmosphereCanvas();
+window.addEventListener("resize", resizeAtmosphereCanvas);
+
+function drawAtmosphere() {
+
+    const centerX = atmosphereCanvas.width / 2;
+    const centerY = atmosphereCanvas.height / 2;
+
+    // Dark background
+    atmosphereCtx.fillStyle = "#020202";
+    atmosphereCtx.fillRect(
+        0,
+        0,
+        atmosphereCanvas.width,
+        atmosphereCanvas.height
+    );
+
+    // Subtle central glow
+    const glow = atmosphereCtx.createRadialGradient(
+        centerX,
+        centerY,
+        20,
+        centerX,
+        centerY,
+        260
+    );
+
+    glow.addColorStop(0, "rgba(255,255,255,0.08)");
+    glow.addColorStop(1, "rgba(0,0,0,0)");
+
+    atmosphereCtx.fillStyle = glow;
+
+    atmosphereCtx.fillRect(
+        0,
+        0,
+        atmosphereCanvas.width,
+        atmosphereCanvas.height
+    );
+
+    // Simple sigil
+    atmosphereCtx.save();
+
+    atmosphereCtx.translate(centerX, centerY);
+
+    atmosphereCtx.strokeStyle = "rgba(255,255,255,0.85)";
+    atmosphereCtx.lineWidth = 2;
+
+    atmosphereCtx.beginPath();
+    atmosphereCtx.moveTo(0, -60);
+    atmosphereCtx.lineTo(0, 60);
+    atmosphereCtx.stroke();
+
+    atmosphereCtx.beginPath();
+    atmosphereCtx.moveTo(0, -60);
+    atmosphereCtx.lineTo(-40, -20);
+    atmosphereCtx.stroke();
+
+    atmosphereCtx.beginPath();
+    atmosphereCtx.moveTo(0, 60);
+    atmosphereCtx.lineTo(40, 20);
+    atmosphereCtx.stroke();
+
+    atmosphereCtx.beginPath();
+    atmosphereCtx.arc(
+        0,
+        0,
+        12,
+        0,
+        Math.PI * 2
+    );
+
+    atmosphereCtx.stroke();
+
+    atmosphereCtx.restore();
+
+    requestAnimationFrame(drawAtmosphere);
+}
+
+drawAtmosphere();
