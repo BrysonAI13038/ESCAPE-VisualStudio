@@ -204,3 +204,106 @@ function drawBehavior() {
 }
 
 drawBehavior();
+const gestureCanvas = document.getElementById("gestureCanvas");
+const gestureCtx = gestureCanvas.getContext("2d");
+
+function resizeGestureCanvas() {
+    gestureCanvas.width = gestureCanvas.clientWidth;
+    gestureCanvas.height = gestureCanvas.clientHeight;
+}
+
+resizeGestureCanvas();
+window.addEventListener("resize", resizeGestureCanvas);
+
+let mouseX = -1000;
+let mouseY = -1000;
+
+gestureCanvas.addEventListener("mousemove", function(event) {
+    const rect = gestureCanvas.getBoundingClientRect();
+
+    mouseX = event.clientX - rect.left;
+    mouseY = event.clientY - rect.top;
+});
+
+gestureCanvas.addEventListener("mouseleave", function() {
+    mouseX = -1000;
+    mouseY = -1000;
+});
+
+function drawGesture() {
+
+    gestureCtx.fillStyle = "#050505";
+    gestureCtx.fillRect(
+        0,
+        0,
+        gestureCanvas.width,
+        gestureCanvas.height
+    );
+
+    const centerX = gestureCanvas.width / 2;
+    const centerY = gestureCanvas.height / 2;
+
+    const distance = Math.sqrt(
+        (mouseX - centerX) ** 2 +
+        (mouseY - centerY) ** 2
+    );
+
+    const maxDistance = 300;
+
+    let influence = 1 - distance / maxDistance;
+
+    influence = Math.max(0, Math.min(1, influence));
+
+    gestureCtx.save();
+
+    gestureCtx.translate(centerX, centerY);
+
+    gestureCtx.strokeStyle = "#eeeeee";
+    gestureCtx.lineWidth = 3;
+    gestureCtx.lineCap = "round";
+
+    // The closer the mouse gets,
+    // the more the pieces separate.
+
+    const separation = influence * 35;
+
+    // Vertical form
+    gestureCtx.beginPath();
+    gestureCtx.moveTo(0, -70 - separation);
+    gestureCtx.lineTo(0, -5);
+    gestureCtx.stroke();
+
+    gestureCtx.beginPath();
+    gestureCtx.moveTo(0, 5);
+    gestureCtx.lineTo(0, 70 + separation);
+    gestureCtx.stroke();
+
+    // Upper diagonal
+    gestureCtx.beginPath();
+    gestureCtx.moveTo(0, -70 - separation);
+    gestureCtx.lineTo(-45 - separation, -25);
+    gestureCtx.stroke();
+
+    // Lower diagonal
+    gestureCtx.beginPath();
+    gestureCtx.moveTo(0, 70 + separation);
+    gestureCtx.lineTo(45 + separation, 25);
+    gestureCtx.stroke();
+
+    // Center
+    gestureCtx.beginPath();
+    gestureCtx.arc(
+        0,
+        0,
+        14 + influence * 8,
+        0,
+        Math.PI * 2
+    );
+    gestureCtx.stroke();
+
+    gestureCtx.restore();
+
+    requestAnimationFrame(drawGesture);
+}
+
+drawGesture();
