@@ -1,3 +1,13 @@
+// ========================================
+// ESCAPE — VISUAL RULE TESTS
+// ========================================
+
+
+// ========================================
+// TEST 1 — SIGIL SEED
+// Rule: Repeatable form
+// ========================================
+
 const canvas = document.getElementById("sigilCanvas");
 const ctx = canvas.getContext("2d");
 
@@ -13,85 +23,165 @@ let rotation = 0;
 let pulse = 0;
 
 function drawSigil() {
+
     const centerX = canvas.width / 2;
     const centerY = canvas.height / 2;
 
-    ctx.clearRect(0, 0, canvas.width, canvas.height);
+    ctx.clearRect(
+        0,
+        0,
+        canvas.width,
+        canvas.height
+    );
 
     // Dark background
     ctx.fillStyle = "#050505";
-    ctx.fillRect(0, 0, canvas.width, canvas.height);
+
+    ctx.fillRect(
+        0,
+        0,
+        canvas.width,
+        canvas.height
+    );
 
     ctx.save();
 
-    // Move to the center
-    ctx.translate(centerX, centerY);
+    // Move to center
+    ctx.translate(
+        centerX,
+        centerY
+    );
 
-    // Slowly rotate the entire sigil
+    // Slow rotation
     ctx.rotate(rotation);
 
-    // Slight breathing motion
-    const size = 1 + Math.sin(pulse) * 0.05;
-    ctx.scale(size, size);
+    // Subtle breathing
+    const size =
+        1 + Math.sin(pulse) * 0.05;
+
+    ctx.scale(
+        size,
+        size
+    );
 
     ctx.strokeStyle = "#eeeeee";
     ctx.lineWidth = 3;
     ctx.lineCap = "round";
 
-    /*
-        SIGIL STRUCTURE
 
-        The sigil is made from:
-        1. A vertical line
-        2. Two angled lines
-        3. A small center shape
-    */
-
-    // Vertical line
+    // Vertical form
     ctx.beginPath();
-    ctx.moveTo(0, -70);
-    ctx.lineTo(0, 70);
+
+    ctx.moveTo(
+        0,
+        -70
+    );
+
+    ctx.lineTo(
+        0,
+        70
+    );
+
     ctx.stroke();
 
-    // Upper-left diagonal
+
+    // Upper diagonal
     ctx.beginPath();
-    ctx.moveTo(0, -70);
-    ctx.lineTo(-45, -25);
+
+    ctx.moveTo(
+        0,
+        -70
+    );
+
+    ctx.lineTo(
+        -45,
+        -25
+    );
+
     ctx.stroke();
 
-    // Lower-right diagonal
+
+    // Lower diagonal
     ctx.beginPath();
-    ctx.moveTo(0, 70);
-    ctx.lineTo(45, 25);
+
+    ctx.moveTo(
+        0,
+        70
+    );
+
+    ctx.lineTo(
+        45,
+        25
+    );
+
     ctx.stroke();
+
 
     // Center circle
     ctx.beginPath();
-    ctx.arc(0, 0, 14, 0, Math.PI * 2);
+
+    ctx.arc(
+        0,
+        0,
+        14,
+        0,
+        Math.PI * 2
+    );
+
     ctx.stroke();
 
     ctx.restore();
 
-    // Update movement
+
+    // Animation
     rotation += 0.002;
     pulse += 0.03;
 
-    requestAnimationFrame(drawSigil);
+    requestAnimationFrame(
+        drawSigil
+    );
 }
 
 drawSigil();
-const behaviorCanvas = document.getElementById("behaviorCanvas");
-const behaviorCtx = behaviorCanvas.getContext("2d");
+
+
+
+// ========================================
+// TEST 2 — BEHAVIOR RULE
+// Rule: Dissolve
+// ========================================
+
+const behaviorCanvas =
+    document.getElementById(
+        "behaviorCanvas"
+    );
+
+const behaviorCtx =
+    behaviorCanvas.getContext(
+        "2d"
+    );
+
 
 function resizeBehaviorCanvas() {
-    behaviorCanvas.width = behaviorCanvas.clientWidth;
-    behaviorCanvas.height = behaviorCanvas.clientHeight;
+
+    behaviorCanvas.width =
+        behaviorCanvas.clientWidth;
+
+    behaviorCanvas.height =
+        behaviorCanvas.clientHeight;
 }
 
 resizeBehaviorCanvas();
-window.addEventListener("resize", resizeBehaviorCanvas);
 
+window.addEventListener(
+    "resize",
+    resizeBehaviorCanvas
+);
+
+
+// Forms
 const forms = [
+
     {
         x: 0.25,
         y: 0.35,
@@ -99,6 +189,7 @@ const forms = [
         opacity: 1,
         disappearing: false
     },
+
     {
         x: 0.50,
         y: 0.50,
@@ -106,6 +197,7 @@ const forms = [
         opacity: 1,
         disappearing: false
     },
+
     {
         x: 0.72,
         y: 0.32,
@@ -113,6 +205,7 @@ const forms = [
         opacity: 1,
         disappearing: false
     },
+
     {
         x: 0.68,
         y: 0.70,
@@ -120,6 +213,7 @@ const forms = [
         opacity: 1,
         disappearing: false
     },
+
     {
         x: 0.30,
         y: 0.72,
@@ -127,36 +221,70 @@ const forms = [
         opacity: 1,
         disappearing: false
     }
+
 ];
 
-behaviorCanvas.addEventListener("click", function(event) {
 
-    const rect = behaviorCanvas.getBoundingClientRect();
+// Click interaction
+behaviorCanvas.addEventListener(
+    "click",
+    function(event) {
 
-    const mouseX = event.clientX - rect.left;
-    const mouseY = event.clientY - rect.top;
+        const rect =
+            behaviorCanvas.getBoundingClientRect();
 
-    forms.forEach(form => {
+        const mouseX =
+            event.clientX - rect.left;
 
-        const x = form.x * behaviorCanvas.width;
-        const y = form.y * behaviorCanvas.height;
+        const mouseY =
+            event.clientY - rect.top;
 
-        const distance = Math.sqrt(
-            (mouseX - x) ** 2 +
-            (mouseY - y) ** 2
+
+        forms.forEach(
+            function(form) {
+
+                const x =
+                    form.x *
+                    behaviorCanvas.width;
+
+                const y =
+                    form.y *
+                    behaviorCanvas.height;
+
+
+                const distance =
+                    Math.sqrt(
+
+                        (mouseX - x) ** 2 +
+
+                        (mouseY - y) ** 2
+
+                    );
+
+
+                if (
+                    distance <
+                    form.size + 15
+                ) {
+
+                    form.disappearing =
+                        true;
+
+                }
+
+            }
         );
 
-        if (distance < form.size + 15) {
-            form.disappearing = true;
-        }
+    }
+);
 
-    });
 
-});
-
+// Draw behavior
 function drawBehavior() {
 
-    behaviorCtx.fillStyle = "#050505";
+    behaviorCtx.fillStyle =
+        "#050505";
+
     behaviorCtx.fillRect(
         0,
         0,
@@ -164,75 +292,158 @@ function drawBehavior() {
         behaviorCanvas.height
     );
 
-    forms.forEach(form => {
 
-        if (form.disappearing) {
-            form.opacity -= 0.01;
-            form.size += 0.15;
+    forms.forEach(
+        function(form) {
+
+            // Dissolve
+            if (
+                form.disappearing
+            ) {
+
+                form.opacity -=
+                    0.01;
+
+                form.size +=
+                    0.15;
+
+            }
+
+
+            if (
+                form.opacity <= 0
+            ) {
+
+                form.opacity = 0;
+
+            }
+
+
+            const x =
+                form.x *
+                behaviorCanvas.width;
+
+            const y =
+                form.y *
+                behaviorCanvas.height;
+
+
+            behaviorCtx.save();
+
+
+            behaviorCtx.globalAlpha =
+                form.opacity;
+
+            behaviorCtx.strokeStyle =
+                "#eeeeee";
+
+            behaviorCtx.lineWidth = 2;
+
+
+            behaviorCtx.beginPath();
+
+            behaviorCtx.arc(
+                x,
+                y,
+                form.size,
+                0,
+                Math.PI * 2
+            );
+
+            behaviorCtx.stroke();
+
+
+            behaviorCtx.restore();
+
         }
+    );
 
-        if (form.opacity <= 0) {
-            form.opacity = 0;
-        }
 
-        const x = form.x * behaviorCanvas.width;
-        const y = form.y * behaviorCanvas.height;
-
-        behaviorCtx.save();
-
-        behaviorCtx.globalAlpha = form.opacity;
-        behaviorCtx.strokeStyle = "#eeeeee";
-        behaviorCtx.lineWidth = 2;
-
-        behaviorCtx.beginPath();
-
-        behaviorCtx.arc(
-            x,
-            y,
-            form.size,
-            0,
-            Math.PI * 2
-        );
-
-        behaviorCtx.stroke();
-
-        behaviorCtx.restore();
-
-    });
-
-    requestAnimationFrame(drawBehavior);
+    requestAnimationFrame(
+        drawBehavior
+    );
 }
 
 drawBehavior();
-const gestureCanvas = document.getElementById("gestureCanvas");
-const gestureCtx = gestureCanvas.getContext("2d");
+
+
+
+// ========================================
+// TEST 3 — GESTURE LANGUAGE
+// Rule: Proximity creates tension
+// ========================================
+
+const gestureCanvas =
+    document.getElementById(
+        "gestureCanvas"
+    );
+
+const gestureCtx =
+    gestureCanvas.getContext(
+        "2d"
+    );
+
 
 function resizeGestureCanvas() {
-    gestureCanvas.width = gestureCanvas.clientWidth;
-    gestureCanvas.height = gestureCanvas.clientHeight;
+
+    gestureCanvas.width =
+        gestureCanvas.clientWidth;
+
+    gestureCanvas.height =
+        gestureCanvas.clientHeight;
 }
 
 resizeGestureCanvas();
-window.addEventListener("resize", resizeGestureCanvas);
 
+window.addEventListener(
+    "resize",
+    resizeGestureCanvas
+);
+
+
+// Mouse position
 let mouseX = -1000;
 let mouseY = -1000;
 
-gestureCanvas.addEventListener("mousemove", function(event) {
-    const rect = gestureCanvas.getBoundingClientRect();
 
-    mouseX = event.clientX - rect.left;
-    mouseY = event.clientY - rect.top;
-});
+// Track mouse
+gestureCanvas.addEventListener(
+    "mousemove",
+    function(event) {
 
-gestureCanvas.addEventListener("mouseleave", function() {
-    mouseX = -1000;
-    mouseY = -1000;
-});
+        const rect =
+            gestureCanvas.getBoundingClientRect();
 
+        mouseX =
+            event.clientX -
+            rect.left;
+
+        mouseY =
+            event.clientY -
+            rect.top;
+
+    }
+);
+
+
+// Reset when mouse leaves
+gestureCanvas.addEventListener(
+    "mouseleave",
+    function() {
+
+        mouseX = -1000;
+        mouseY = -1000;
+
+    }
+);
+
+
+// Draw gesture
 function drawGesture() {
 
-    gestureCtx.fillStyle = "#050505";
+    gestureCtx.fillStyle =
+        "#050505";
+
     gestureCtx.fillRect(
         0,
         0,
@@ -240,58 +451,134 @@ function drawGesture() {
         gestureCanvas.height
     );
 
-    const centerX = gestureCanvas.width / 2;
-    const centerY = gestureCanvas.height / 2;
 
-    const distance = Math.sqrt(
-        (mouseX - centerX) ** 2 +
-        (mouseY - centerY) ** 2
-    );
+    const centerX =
+        gestureCanvas.width / 2;
+
+    const centerY =
+        gestureCanvas.height / 2;
+
+
+    // Distance from mouse
+    const distance =
+        Math.sqrt(
+
+            (mouseX - centerX) ** 2 +
+
+            (mouseY - centerY) ** 2
+
+        );
+
 
     const maxDistance = 300;
 
-    let influence = 1 - distance / maxDistance;
 
-    influence = Math.max(0, Math.min(1, influence));
+    let influence =
+        1 -
+        distance /
+        maxDistance;
+
+
+    influence =
+        Math.max(
+            0,
+            Math.min(
+                1,
+                influence
+            )
+        );
+
 
     gestureCtx.save();
 
-    gestureCtx.translate(centerX, centerY);
 
-    gestureCtx.strokeStyle = "#eeeeee";
+    gestureCtx.translate(
+        centerX,
+        centerY
+    );
+
+
+    gestureCtx.strokeStyle =
+        "#eeeeee";
+
     gestureCtx.lineWidth = 3;
-    gestureCtx.lineCap = "round";
 
-    // The closer the mouse gets,
-    // the more the pieces separate.
+    gestureCtx.lineCap =
+        "round";
 
-    const separation = influence * 35;
 
-    // Vertical form
+    // Separation
+    const separation =
+        influence * 35;
+
+
+    // Upper vertical
     gestureCtx.beginPath();
-    gestureCtx.moveTo(0, -70 - separation);
-    gestureCtx.lineTo(0, -5);
+
+    gestureCtx.moveTo(
+        0,
+        -70 - separation
+    );
+
+    gestureCtx.lineTo(
+        0,
+        -5
+    );
+
     gestureCtx.stroke();
 
+
+    // Lower vertical
     gestureCtx.beginPath();
-    gestureCtx.moveTo(0, 5);
-    gestureCtx.lineTo(0, 70 + separation);
+
+    gestureCtx.moveTo(
+        0,
+        5
+    );
+
+    gestureCtx.lineTo(
+        0,
+        70 + separation
+    );
+
     gestureCtx.stroke();
+
 
     // Upper diagonal
     gestureCtx.beginPath();
-    gestureCtx.moveTo(0, -70 - separation);
-    gestureCtx.lineTo(-45 - separation, -25);
+
+    gestureCtx.moveTo(
+        0,
+        -70 - separation
+    );
+
+    gestureCtx.lineTo(
+        -45 - separation,
+        -25
+    );
+
     gestureCtx.stroke();
+
 
     // Lower diagonal
     gestureCtx.beginPath();
-    gestureCtx.moveTo(0, 70 + separation);
-    gestureCtx.lineTo(45 + separation, 25);
+
+    gestureCtx.moveTo(
+        0,
+        70 + separation
+    );
+
+    gestureCtx.lineTo(
+        45 + separation,
+        25
+    );
+
     gestureCtx.stroke();
 
-    // Center
+
+    // Center circle
     gestureCtx.beginPath();
+
     gestureCtx.arc(
         0,
         0,
@@ -299,53 +586,71 @@ function drawGesture() {
         0,
         Math.PI * 2
     );
+
     gestureCtx.stroke();
+
 
     gestureCtx.restore();
 
-    requestAnimationFrame(drawGesture);
+
+    requestAnimationFrame(
+        drawGesture
+    );
 }
 
 drawGesture();
-const atmosphereCanvas = document.getElementById("atmosphereCanvas");
-const atmosphereCtx = atmosphereCanvas.getContext("2d");
+
+
+
+// ========================================
+// TEST 4 — ATMOSPHERE CONSTRAINT
+// Rule: Slow breathing atmosphere
+// ========================================
+
+const atmosphereCanvas =
+    document.getElementById(
+        "atmosphereCanvas"
+    );
+
+const atmosphereCtx =
+    atmosphereCanvas.getContext(
+        "2d"
+    );
+
 
 function resizeAtmosphereCanvas() {
-    atmosphereCanvas.width = atmosphereCanvas.clientWidth;
-    atmosphereCanvas.height = atmosphereCanvas.clientHeight;
+
+    atmosphereCanvas.width =
+        atmosphereCanvas.clientWidth;
+
+    atmosphereCanvas.height =
+        atmosphereCanvas.clientHeight;
 }
 
 resizeAtmosphereCanvas();
-window.addEventListener("resize", resizeAtmosphereCanvas);
 
+window.addEventListener(
+    "resize",
+    resizeAtmosphereCanvas
+);
+
+
+let atmosphereTime = 0;
+
+
+// Draw atmosphere
 function drawAtmosphere() {
 
-    const centerX = atmosphereCanvas.width / 2;
-    const centerY = atmosphereCanvas.height / 2;
+    const centerX =
+        atmosphereCanvas.width / 2;
+
+    const centerY =
+        atmosphereCanvas.height / 2;
+
 
     // Dark background
-    atmosphereCtx.fillStyle = "#020202";
-    atmosphereCtx.fillRect(
-        0,
-        0,
-        atmosphereCanvas.width,
-        atmosphereCanvas.height
-    );
-
-    // Subtle central glow
-    const glow = atmosphereCtx.createRadialGradient(
-        centerX,
-        centerY,
-        20,
-        centerX,
-        centerY,
-        260
-    );
-
-    glow.addColorStop(0, "rgba(255,255,255,0.08)");
-    glow.addColorStop(1, "rgba(0,0,0,0)");
-
-    atmosphereCtx.fillStyle = glow;
+    atmosphereCtx.fillStyle =
+        "#020202";
 
     atmosphereCtx.fillRect(
         0,
@@ -354,30 +659,128 @@ function drawAtmosphere() {
         atmosphereCanvas.height
     );
 
-    // Simple sigil
+
+    // Slow breathing
+    atmosphereTime +=
+        0.008;
+
+
+    const breathing =
+        Math.sin(
+            atmosphereTime
+        );
+
+
+    const glowRadius =
+        220 +
+        breathing * 35;
+
+
+    // Central glow
+    const glow =
+        atmosphereCtx.createRadialGradient(
+
+            centerX,
+            centerY,
+            20,
+
+            centerX,
+            centerY,
+            glowRadius
+
+        );
+
+
+    glow.addColorStop(
+        0,
+        "rgba(255,255,255,0.09)"
+    );
+
+    glow.addColorStop(
+        1,
+        "rgba(0,0,0,0)"
+    );
+
+
+    atmosphereCtx.fillStyle =
+        glow;
+
+
+    atmosphereCtx.fillRect(
+        0,
+        0,
+        atmosphereCanvas.width,
+        atmosphereCanvas.height
+    );
+
+
+    // Sigil
     atmosphereCtx.save();
 
-    atmosphereCtx.translate(centerX, centerY);
 
-    atmosphereCtx.strokeStyle = "rgba(255,255,255,0.85)";
+    atmosphereCtx.translate(
+        centerX,
+        centerY
+    );
+
+
+    atmosphereCtx.strokeStyle =
+        "rgba(255,255,255,0.85)";
+
     atmosphereCtx.lineWidth = 2;
 
+
+    // Vertical
     atmosphereCtx.beginPath();
-    atmosphereCtx.moveTo(0, -60);
-    atmosphereCtx.lineTo(0, 60);
+
+    atmosphereCtx.moveTo(
+        0,
+        -60
+    );
+
+    atmosphereCtx.lineTo(
+        0,
+        60
+    );
+
     atmosphereCtx.stroke();
 
+
+    // Upper diagonal
     atmosphereCtx.beginPath();
-    atmosphereCtx.moveTo(0, -60);
-    atmosphereCtx.lineTo(-40, -20);
+
+    atmosphereCtx.moveTo(
+        0,
+        -60
+    );
+
+    atmosphereCtx.lineTo(
+        -40,
+        -20
+    );
+
     atmosphereCtx.stroke();
 
+
+    // Lower diagonal
     atmosphereCtx.beginPath();
-    atmosphereCtx.moveTo(0, 60);
-    atmosphereCtx.lineTo(40, 20);
+
+    atmosphereCtx.moveTo(
+        0,
+        60
+    );
+
+    atmosphereCtx.lineTo(
+        40,
+        20
+    );
+
     atmosphereCtx.stroke();
 
+
+    // Center
     atmosphereCtx.beginPath();
+
     atmosphereCtx.arc(
         0,
         0,
@@ -388,9 +791,13 @@ function drawAtmosphere() {
 
     atmosphereCtx.stroke();
 
+
     atmosphereCtx.restore();
 
-    requestAnimationFrame(drawAtmosphere);
+
+    requestAnimationFrame(
+        drawAtmosphere
+    );
 }
 
 drawAtmosphere();
