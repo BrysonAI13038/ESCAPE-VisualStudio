@@ -487,95 +487,68 @@ function drawGesture() {
     );
 
 
-    gestureCtx.strokeStyle =
-        "#eeeeee";
+    const gestureGold = "#ead8b6";
+    const separation = influence * 14;
 
-    gestureCtx.lineWidth = 3;
+    gestureCtx.strokeStyle = gestureGold;
+    gestureCtx.fillStyle = gestureGold;
+    gestureCtx.lineCap = "round";
+    gestureCtx.shadowColor = "rgba(234, 216, 182, 0.55)";
+    gestureCtx.shadowBlur = 8 + influence * 5;
 
-    gestureCtx.lineCap =
-        "round";
+    // The broken rings open outward as the pointer approaches.
+    gestureCtx.save();
+    gestureCtx.rotate(influence * 0.12);
+    gestureCtx.lineWidth = 2.5;
 
+    const gestureSegments = [
+        { radius: 88, start: -2.95, end: -1.70 },
+        { radius: 88, start: -1.42, end: -0.55 },
+        { radius: 88, start: -0.34, end: 0.33 },
+        { radius: 88, start: 0.58, end: 1.48 },
+        { radius: 88, start: 1.79, end: 2.62 },
+        { radius: 88, start: 2.82, end: 3.38 },
+        { radius: 72, start: -2.72, end: -1.78 },
+        { radius: 72, start: -1.35, end: -0.63 },
+        { radius: 72, start: -0.39, end: 0.18 },
+        { radius: 72, start: 0.47, end: 1.31 },
+        { radius: 72, start: 1.73, end: 2.46 },
+        { radius: 72, start: 2.75, end: 3.28 }
+    ];
 
-    // Separation
-    const separation =
-        influence * 35;
+    gestureSegments.forEach(function(segment) {
+        gestureCtx.beginPath();
+        gestureCtx.arc(
+            0,
+            0,
+            segment.radius + separation,
+            segment.start,
+            segment.end
+        );
+        gestureCtx.stroke();
+    });
 
+    [
+        { x: 0, y: -103 - separation, radius: 3.5 },
+        { x: 98 + separation, y: 0, radius: 3 },
+        { x: 0, y: 104 + separation, radius: 1.7 },
+        { x: -98 - separation, y: 0, radius: 3 },
+        { x: 0, y: -83 - separation, radius: 2 }
+    ].forEach(function(point) {
+        gestureCtx.beginPath();
+        gestureCtx.arc(point.x, point.y, point.radius, 0, Math.PI * 2);
+        gestureCtx.fill();
+    });
 
-    // Upper vertical
+    gestureCtx.restore();
+
+    // The cross remains stable and recognizable.
+    gestureCtx.lineWidth = 6;
     gestureCtx.beginPath();
-
-    gestureCtx.moveTo(
-        0,
-        -70 - separation
-    );
-
-    gestureCtx.lineTo(
-        0,
-        -5
-    );
-
-    gestureCtx.stroke();
-
-
-    // Lower vertical
-    gestureCtx.beginPath();
-
-    gestureCtx.moveTo(
-        0,
-        5
-    );
-
-    gestureCtx.lineTo(
-        0,
-        70 + separation
-    );
-
-    gestureCtx.stroke();
-
-
-    // Upper diagonal
-    gestureCtx.beginPath();
-
-    gestureCtx.moveTo(
-        0,
-        -70 - separation
-    );
-
-    gestureCtx.lineTo(
-        -45 - separation,
-        -25
-    );
-
-    gestureCtx.stroke();
-
-
-    // Lower diagonal
-    gestureCtx.beginPath();
-
-    gestureCtx.moveTo(
-        0,
-        70 + separation
-    );
-
-    gestureCtx.lineTo(
-        45 + separation,
-        25
-    );
-
-    gestureCtx.stroke();
-
-
-    // Center circle
-    gestureCtx.beginPath();
-
-    gestureCtx.arc(
-        0,
-        0,
-        14 + influence * 8,
-        0,
-        Math.PI * 2
-    );
-
+    gestureCtx.moveTo(0, -42);
+    gestureCtx.lineTo(0, 58);
+    gestureCtx.moveTo(-25 - influence * 4, -12);
+    gestureCtx.lineTo(25 + influence * 4, -12);
     gestureCtx.stroke();
 
 
@@ -682,7 +655,7 @@ function drawAtmosphere() {
 
     glow.addColorStop(
         0,
-        "rgba(255,255,255,0.09)"
+        "rgba(234,216,182,0.13)"
     );
 
     glow.addColorStop(
@@ -713,71 +686,55 @@ function drawAtmosphere() {
     );
 
 
-    atmosphereCtx.strokeStyle =
-        "rgba(255,255,255,0.85)";
+    const atmosphereGold = "rgba(234,216,182,0.9)";
+    const glowStrength = 8 + (breathing + 1) * 4;
 
-    atmosphereCtx.lineWidth = 2;
+    atmosphereCtx.strokeStyle = atmosphereGold;
+    atmosphereCtx.fillStyle = atmosphereGold;
+    atmosphereCtx.lineCap = "round";
+    atmosphereCtx.shadowColor = "rgba(234,216,182,0.7)";
+    atmosphereCtx.shadowBlur = glowStrength;
+    atmosphereCtx.lineWidth = 2.5;
 
+    const atmosphereSegments = [
+        { radius: 88, start: -2.95, end: -1.70 },
+        { radius: 88, start: -1.42, end: -0.55 },
+        { radius: 88, start: -0.34, end: 0.33 },
+        { radius: 88, start: 0.58, end: 1.48 },
+        { radius: 88, start: 1.79, end: 2.62 },
+        { radius: 88, start: 2.82, end: 3.38 },
+        { radius: 72, start: -2.72, end: -1.78 },
+        { radius: 72, start: -1.35, end: -0.63 },
+        { radius: 72, start: -0.39, end: 0.18 },
+        { radius: 72, start: 0.47, end: 1.31 },
+        { radius: 72, start: 1.73, end: 2.46 },
+        { radius: 72, start: 2.75, end: 3.28 }
+    ];
 
-    // Vertical
+    atmosphereSegments.forEach(function(segment) {
+        atmosphereCtx.beginPath();
+        atmosphereCtx.arc(0, 0, segment.radius, segment.start, segment.end);
+        atmosphereCtx.stroke();
+    });
+
+    [
+        { x: 0, y: -103, radius: 3.5 },
+        { x: 98, y: 0, radius: 3 },
+        { x: 0, y: 104, radius: 1.7 },
+        { x: -98, y: 0, radius: 3 },
+        { x: 0, y: -83, radius: 2 }
+    ].forEach(function(point) {
+        atmosphereCtx.beginPath();
+        atmosphereCtx.arc(point.x, point.y, point.radius, 0, Math.PI * 2);
+        atmosphereCtx.fill();
+    });
+
+    atmosphereCtx.lineWidth = 6;
     atmosphereCtx.beginPath();
-
-    atmosphereCtx.moveTo(
-        0,
-        -60
-    );
-
-    atmosphereCtx.lineTo(
-        0,
-        60
-    );
-
-    atmosphereCtx.stroke();
-
-
-    // Upper diagonal
-    atmosphereCtx.beginPath();
-
-    atmosphereCtx.moveTo(
-        0,
-        -60
-    );
-
-    atmosphereCtx.lineTo(
-        -40,
-        -20
-    );
-
-    atmosphereCtx.stroke();
-
-
-    // Lower diagonal
-    atmosphereCtx.beginPath();
-
-    atmosphereCtx.moveTo(
-        0,
-        60
-    );
-
-    atmosphereCtx.lineTo(
-        40,
-        20
-    );
-
-    atmosphereCtx.stroke();
-
-
-    // Center
-    atmosphereCtx.beginPath();
-
-    atmosphereCtx.arc(
-        0,
-        0,
-        12,
-        0,
-        Math.PI * 2
-    );
-
+    atmosphereCtx.moveTo(0, -42);
+    atmosphereCtx.lineTo(0, 58);
+    atmosphereCtx.moveTo(-25, -12);
+    atmosphereCtx.lineTo(25, -12);
     atmosphereCtx.stroke();
 
 
