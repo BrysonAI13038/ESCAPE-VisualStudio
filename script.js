@@ -52,9 +52,6 @@ function drawSigil() {
         centerY
     );
 
-    // Slow rotation
-    ctx.rotate(rotation);
-
     // Subtle breathing
     const size =
         1 + Math.sin(pulse) * 0.05;
@@ -64,70 +61,62 @@ function drawSigil() {
         size
     );
 
-    ctx.strokeStyle = "#eeeeee";
-    ctx.lineWidth = 3;
+    const gold = "#ead8b6";
+
+    ctx.strokeStyle = gold;
+    ctx.fillStyle = gold;
     ctx.lineCap = "round";
+    ctx.shadowColor = "rgba(234, 216, 182, 0.65)";
+    ctx.shadowBlur = 9;
 
+    // Broken circular rings rotate slowly around the still cross.
+    ctx.save();
+    ctx.rotate(rotation);
+    ctx.lineWidth = 2.5;
 
-    // Vertical form
+    const ringSegments = [
+        { radius: 88, start: -2.95, end: -1.70 },
+        { radius: 88, start: -1.42, end: -0.55 },
+        { radius: 88, start: -0.34, end: 0.33 },
+        { radius: 88, start: 0.58, end: 1.48 },
+        { radius: 88, start: 1.79, end: 2.62 },
+        { radius: 88, start: 2.82, end: 3.38 },
+        { radius: 72, start: -2.72, end: -1.78 },
+        { radius: 72, start: -1.35, end: -0.63 },
+        { radius: 72, start: -0.39, end: 0.18 },
+        { radius: 72, start: 0.47, end: 1.31 },
+        { radius: 72, start: 1.73, end: 2.46 },
+        { radius: 72, start: 2.75, end: 3.28 }
+    ];
+
+    ringSegments.forEach(function(segment) {
+        ctx.beginPath();
+        ctx.arc(0, 0, segment.radius, segment.start, segment.end);
+        ctx.stroke();
+    });
+
+    // Small points emphasize the openings in the outer ring.
+    [
+        { x: 0, y: -103, radius: 3.5 },
+        { x: 98, y: 0, radius: 3 },
+        { x: 0, y: 104, radius: 1.7 },
+        { x: -98, y: 0, radius: 3 },
+        { x: 0, y: -83, radius: 2 }
+    ].forEach(function(point) {
+        ctx.beginPath();
+        ctx.arc(point.x, point.y, point.radius, 0, Math.PI * 2);
+        ctx.fill();
+    });
+
+    ctx.restore();
+
+    // Central Christian cross.
+    ctx.lineWidth = 6;
     ctx.beginPath();
-
-    ctx.moveTo(
-        0,
-        -70
-    );
-
-    ctx.lineTo(
-        0,
-        70
-    );
-
-    ctx.stroke();
-
-
-    // Upper diagonal
-    ctx.beginPath();
-
-    ctx.moveTo(
-        0,
-        -70
-    );
-
-    ctx.lineTo(
-        -45,
-        -25
-    );
-
-    ctx.stroke();
-
-
-    // Lower diagonal
-    ctx.beginPath();
-
-    ctx.moveTo(
-        0,
-        70
-    );
-
-    ctx.lineTo(
-        45,
-        25
-    );
-
-    ctx.stroke();
-
-
-    // Center circle
-    ctx.beginPath();
-
-    ctx.arc(
-        0,
-        0,
-        14,
-        0,
-        Math.PI * 2
-    );
-
+    ctx.moveTo(0, -42);
+    ctx.lineTo(0, 58);
+    ctx.moveTo(-25, -12);
+    ctx.lineTo(25, -12);
     ctx.stroke();
 
     ctx.restore();
